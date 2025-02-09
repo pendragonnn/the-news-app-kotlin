@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-parcelize")
 
     // secret gradle plugin
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")

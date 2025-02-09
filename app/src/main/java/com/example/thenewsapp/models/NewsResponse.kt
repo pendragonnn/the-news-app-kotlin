@@ -1,4 +1,4 @@
-import Article
+import com.example.thenewsapp.models.Article
 
 data class NewsResponse(
     val articles: MutableList<Article>,
