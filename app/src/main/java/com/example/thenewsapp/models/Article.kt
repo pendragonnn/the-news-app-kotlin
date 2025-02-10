@@ -1,6 +1,6 @@
 package com.example.thenewsapp.models
 
-import Source
+import com.example.thenewsapp.models.Source
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable

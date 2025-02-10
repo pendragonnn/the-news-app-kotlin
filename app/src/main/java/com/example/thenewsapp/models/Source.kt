@@ -1,3 +1,5 @@
+package com.example.thenewsapp.models
+
 import java.io.Serializable
 
 data class Source(
