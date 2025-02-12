@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.thenewsapp.R
 import com.example.thenewsapp.adapters.NewsAdapter
 import com.example.thenewsapp.databinding.FragmentFavoritesBinding
+import com.example.thenewsapp.databinding.FragmentHeadlinesBinding
 import com.example.thenewsapp.ui.NewsActivity
 import com.example.thenewsapp.ui.NewsViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -24,9 +25,17 @@ class FavoritesFragment : Fragment() {
     lateinit var newsAdapter: NewsAdapter
     lateinit var binding: FragmentFavoritesBinding
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentFavoritesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentFavoritesBinding.bind(view)
+//        binding = FragmentFavoritesBinding.bind(view)
 
         newsViewModel = (activity as NewsActivity).newsViewModel
         setupFavoritesRecycler()
@@ -35,7 +44,7 @@ class FavoritesFragment : Fragment() {
             val bundle = Bundle().apply {
                 putSerializable("article", it)
             }
-            findNavController().navigate(R.id.action_favoritesFragment2_to_articleFragment,bundle)
+            findNavController().navigate(R.id.action_favoritesFragment_to_articleFragment,bundle)
         }
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {

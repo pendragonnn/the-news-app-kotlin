@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.thenewsapp.R
 import androidx.lifecycle.Observer
 import com.example.thenewsapp.adapters.NewsAdapter
+import com.example.thenewsapp.databinding.FragmentHeadlinesBinding
 import com.example.thenewsapp.databinding.FragmentSearchBinding
 import com.example.thenewsapp.ui.NewsActivity
 import com.example.thenewsapp.ui.NewsViewModel
@@ -37,10 +38,18 @@ class SearchFragment : Fragment() {
     lateinit var itemSearchError: CardView
     lateinit var binding: FragmentSearchBinding
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentSearchBinding.bind(view)
+//        binding = FragmentSearchBinding.bind(view)
 
         itemSearchError = view.findViewById(R.id.itemSearchError)
 
@@ -57,7 +66,7 @@ class SearchFragment : Fragment() {
             val bundle = Bundle().apply {
                 putSerializable("article", it)
             }
-            findNavController().navigate(R.id.action_searchFragment2_to_articleFragment,bundle)
+            findNavController().navigate(R.id.action_searchFragment_to_articleFragment,bundle)
         }
 
         var job: Job? = null

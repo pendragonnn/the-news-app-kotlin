@@ -33,7 +33,12 @@
         app:itemIconTint="@color/white"
         android:background="@color/purple"
         app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
+        app:labelVisibilityMode="labeled"
+        app:itemIconSize="24dp"
+        app:itemPaddingTop="4dp"
+        app:itemPaddingBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
