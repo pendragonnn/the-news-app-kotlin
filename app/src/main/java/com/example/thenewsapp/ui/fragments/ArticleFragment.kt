@@ -9,6 +9,7 @@ import android.webkit.WebViewClient
 import androidx.navigation.fragment.navArgs
 import com.example.thenewsapp.R
 import com.example.thenewsapp.databinding.FragmentArticleBinding
+import com.example.thenewsapp.databinding.FragmentHeadlinesBinding
 import com.example.thenewsapp.ui.NewsActivity
 import com.example.thenewsapp.ui.NewsViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -19,9 +20,17 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     val args: ArticleFragmentArgs by navArgs()
     lateinit var binding: FragmentArticleBinding
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentArticleBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentArticleBinding.bind(view)
+//        binding = FragmentArticleBinding.bind(view)
 
         newsViewModel = (activity as NewsActivity).newsViewModel
         val article = args.article

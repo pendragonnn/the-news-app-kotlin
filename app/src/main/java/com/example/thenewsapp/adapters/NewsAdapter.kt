@@ -1,5 +1,6 @@
 package com.example.thenewsapp.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.thenewsapp.R
 import com.example.thenewsapp.models.Article
+import com.google.android.material.snackbar.Snackbar
 
 class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
@@ -58,12 +60,13 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
             Glide.with(this)
                 .load(article.urlToImage)
                 .into(articleImage)
-            articleSource.text = article.source.name
+            articleSource.text = article.source?.name
             articleTitle.text = article.title
             articleDescription.text = article.description
             articleDateTime.text = article.publishedAt
 
             setOnClickListener {
+                Log.d("NewsAdapter", "Clicked on: ${article}")
                 onItemClickListener?.let {
                     it(article)
                 }

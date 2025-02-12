@@ -2,6 +2,7 @@ package com.example.thenewsapp.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -54,9 +55,11 @@ class HeadlinesFragment : Fragment() {
         newsViewModel = (activity as NewsActivity).newsViewModel
         setupheadlinesRecycler()
 
-        newsAdapter.setOnItemClickListener {
+        newsAdapter.setOnItemClickListener { article ->
+            Log.d("HeadlinesFragment", "Navigating to ArticleFragment with: ${article}")
+
             val bundle = Bundle().apply {
-                putSerializable("article", it)
+                putSerializable("article", article)
             }
             findNavController().navigate(R.id.action_headlinesFragment_to_articleFragment, bundle)
         }
@@ -91,8 +94,6 @@ class HeadlinesFragment : Fragment() {
         retryButton.setOnClickListener {
             newsViewModel.getHeadlines("us")
         }
-
-        setupheadlinesRecycler()
     }
 
     var isError = false
