@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -29,6 +30,7 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository): Andro
 
     init {
         getHeadlines("us")
+        Log.d("API Response", getHeadlines("us").toString())
     }
 
     fun getHeadlines(countryCode: String) = viewModelScope.launch {
@@ -42,6 +44,7 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository): Andro
     private fun handleHeadlinesResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
+                Log.d("API Response", resultResponse.articles.toString())
                 headlinesPage++
                 if (headlinesResponse == null) {
                     headlinesResponse = resultResponse
@@ -79,7 +82,7 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository): Andro
         newsRepository.upsert(article)
     }
 
-    suspend fun getFavoritesNews() = newsRepository.getFavoriteNews()
+    fun getFavoritesNews() = newsRepository.getFavoriteNews()
 
     fun deleteArticle(article: Article) = viewModelScope.launch {
         newsRepository.deleteArticle(article)

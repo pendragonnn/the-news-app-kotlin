@@ -9,12 +9,12 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.load.engine.Resource
 import com.example.thenewsapp.R
 import com.example.thenewsapp.adapters.NewsAdapter
 import com.example.thenewsapp.databinding.FragmentHeadlinesBinding
@@ -31,9 +31,17 @@ class HeadlinesFragment : Fragment() {
     lateinit var itemHeadlinesError: CardView
     lateinit var binding: FragmentHeadlinesBinding
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentHeadlinesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentHeadlinesBinding.bind(view)
+//        binding = FragmentHeadlinesBinding.bind(view)
 
         itemHeadlinesError = view.findViewById(R.id.itemHeadlinesError)
 
@@ -50,14 +58,41 @@ class HeadlinesFragment : Fragment() {
             val bundle = Bundle().apply {
                 putSerializable("article", it)
             }
-            findNavController().navigate(R.id.action_headlinesFragment2_to_articleFragment ,bundle)
+            findNavController().navigate(R.id.action_headlinesFragment2_to_articleFragment, bundle)
         }
 
-//        newsViewModel.headlines.observe(viewLifecycleOwner, Observer { response ->
-//            when(result) {
-//                is Resource.Succes
-//            }
-//        })
+        newsViewModel.headlines.observe(viewLifecycleOwner, Observer { response ->
+            when(response) {
+                is com.example.thenewsapp.util.Resource.Error -> {
+                    hideProgresBar()
+                    response.message?.let { message ->
+                        Toast.makeText(activity, "Error: $message", Toast.LENGTH_LONG).show()
+                        showErrorMessage(message)
+                    }
+                }
+                is com.example.thenewsapp.util.Resource.Loading -> {
+                    showProgressBar()
+                }
+                is com.example.thenewsapp.util.Resource.Success -> {
+                    hideProgresBar()
+                    hideErrorMessage()
+                    response.data?.let { newsResponse ->
+                        newsAdapter.differ.submitList(newsResponse.articles.toList())
+                        val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
+                        isLastPage = newsViewModel.headlinesPage == totalPages
+                        if(isLastPage) {
+                            binding.recyclerHeadlines.setPadding(0,0,0,0)
+                        }
+                    }
+                }
+            }
+        })
+
+        retryButton.setOnClickListener {
+            newsViewModel.getHeadlines("us")
+        }
+
+        setupheadlinesRecycler()
     }
 
     var isError = false

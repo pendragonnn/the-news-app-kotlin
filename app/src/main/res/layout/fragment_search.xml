@@ -51,7 +51,7 @@
         app:layout_constraintTop_toBottomOf="@id/searchEdit" />
 
     <include
-        android:id="@+id/itemHeadlinesError"
+        android:id="@+id/itemSearchError"
         layout="@layout/item_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
