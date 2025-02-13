@@ -13,6 +13,10 @@ import com.bumptech.glide.Glide
 import com.example.thenewsapp.R
 import com.example.thenewsapp.models.Article
 import com.google.android.material.snackbar.Snackbar
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
@@ -63,7 +67,7 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
             articleSource.text = article.source?.name
             articleTitle.text = article.title
             articleDescription.text = article.description
-            articleDateTime.text = article.publishedAt
+            articleDateTime.text = convertDateFormat(article.publishedAt)
 
             setOnClickListener {
                 Log.d("NewsAdapter", "Clicked on: ${article}")
@@ -76,5 +80,19 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
     fun  setOnItemClickListener(listener: (Article) -> Unit) {
         onItemClickListener = listener
+    }
+
+    private fun convertDateFormat(isoDate: String?): String {
+        return try {
+            val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+            isoFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+            val date = isoDate?.let { isoFormat.parse(it) } ?: return "Unknown Date"
+
+            val outputFormat = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault())
+            outputFormat.format(date)
+        } catch (e: Exception) {
+            "Invalid Date"
+        }
     }
 }
