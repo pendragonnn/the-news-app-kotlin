@@ -44,15 +44,18 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository): Andro
     private fun handleHeadlinesResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
-                Log.d("API Response", resultResponse.articles.toString())
-                headlinesPage++
+                Log.d("API Response", "Fetched Articles: ${resultResponse.articles.size}")
+
                 if (headlinesResponse == null) {
                     headlinesResponse = resultResponse
                 } else {
-                    val oldArticles = headlinesResponse?.articles
+                    val oldArticles = headlinesResponse?.articles ?: mutableListOf()
                     val newArticles = resultResponse.articles
-                    oldArticles?.addAll(newArticles)
+
+                    val uniqueArticles = (oldArticles + newArticles).distinctBy { it.url }
+                    headlinesResponse?.articles = uniqueArticles.toMutableList()
                 }
+
                 return Resource.Success(headlinesResponse ?: resultResponse)
             }
         }
@@ -78,6 +81,27 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository): Andro
         return Resource.Error(response.message())
     }
 
+//    private fun handleSearchNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
+//        if (response.isSuccessful) {
+//            response.body()?.let { resultResponse ->
+//                if (searchNewsResponse == null || newSearchQuery != oldSearchQuery) {
+//                    searchNewsPage = 1
+//                    oldSearchQuery = newSearchQuery
+//                    searchNewsResponse = resultResponse
+//                } else {
+//                    val oldArticles = searchNewsResponse?.articles ?: mutableListOf()
+//                    val newArticles = resultResponse.articles
+//
+//                    val uniqueArticles = (oldArticles + newArticles).distinctBy { it.url }
+//                    searchNewsResponse?.articles = uniqueArticles.toMutableList()
+//                }
+//
+//                return Resource.Success(searchNewsResponse ?: resultResponse)
+//            }
+//        }
+//        return Resource.Error(response.message())
+//    }
+
     fun addToFavorites(article: Article) = viewModelScope.launch {
         newsRepository.upsert(article)
     }
@@ -101,18 +125,42 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository): Andro
         }
     }
 
+//    private suspend fun headlinesInternet(countryCode: String) {
+//        headlines.postValue(Resource.Loading())
+//
+//        try {
+//            if (internetConnection(this.getApplication())) {
+//                val response = newsRepository.getHeadlines(countryCode, headlinesPage)
+//                headlines.postValue(handleHeadlinesResponse(response))
+//            } else {
+//                headlines.postValue(Resource.Error("No Internet Connection"))
+//            }
+//        } catch (t: Throwable) {
+//            when(t) {
+//                is IOException -> headlines.postValue(Resource.Error("Unable to connect"))
+//                else -> headlines.postValue(Resource.Error("No Signal"))
+//            }
+//        }
+//    }
+
     private suspend fun headlinesInternet(countryCode: String) {
         headlines.postValue(Resource.Loading())
 
         try {
             if (internetConnection(this.getApplication())) {
                 val response = newsRepository.getHeadlines(countryCode, headlinesPage)
-                headlines.postValue(handleHeadlinesResponse(response))
+                val result = handleHeadlinesResponse(response)
+
+                if (result is Resource.Success) {
+                    headlinesPage++
+                }
+
+                headlines.postValue(result)
             } else {
                 headlines.postValue(Resource.Error("No Internet Connection"))
             }
         } catch (t: Throwable) {
-            when(t) {
+            when (t) {
                 is IOException -> headlines.postValue(Resource.Error("Unable to connect"))
                 else -> headlines.postValue(Resource.Error("No Signal"))
             }
@@ -137,4 +185,29 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository): Andro
             }
         }
     }
+
+//    private suspend fun searchNewsInternet(searchQuery: String) {
+//        newSearchQuery = searchQuery
+//        searchNews.postValue(Resource.Loading())
+//
+//        try {
+//            if (internetConnection(this.getApplication())) {
+//                val response = newsRepository.searchNews(searchQuery, searchNewsPage)
+//                val result = handleSearchNewsResponse(response)
+//
+//                if (result is Resource.Success) {
+//                    searchNewsPage++
+//                }
+//
+//                searchNews.postValue(result)
+//            } else {
+//                searchNews.postValue(Resource.Error("No Internet Connection"))
+//            }
+//        } catch (t: Throwable) {
+//            when (t) {
+//                is IOException -> searchNews.postValue(Resource.Error("Unable to connect"))
+//                else -> searchNews.postValue(Resource.Error("No Signal"))
+//            }
+//        }
+//    }
 }
