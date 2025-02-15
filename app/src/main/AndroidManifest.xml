@@ -5,6 +5,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <meta-data
+        android:name="NEWS_API_KEY"
+        android:value="${NEWS_API_KEY}" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,7 +20,7 @@
         android:theme="@style/Theme.TheNewsApp"
         tools:targetApi="31">
         <activity
-            android:name=".ui.NewsActivity"
+            android:name=".ui.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,13 +28,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.NewsActivity"
+            android:exported="false" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-
-    <meta-data
-        android:name="NEWS_API_KEY"
-        android:value="${NEWS_API_KEY}" />
 
 </manifest>
