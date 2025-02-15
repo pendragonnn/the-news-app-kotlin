@@ -13,16 +13,17 @@ import com.example.thenewsapp.R
 import com.example.thenewsapp.databinding.ActivityNewsBinding
 import com.example.thenewsapp.db.ArticleDatabase
 import com.example.thenewsapp.repository.NewsRepository
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class NewsActivity : AppCompatActivity() {
     lateinit var newsViewModel: NewsViewModel
     lateinit var binding: ActivityNewsBinding
+    lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewsBinding.inflate(layoutInflater)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        enableEdgeToEdge()
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

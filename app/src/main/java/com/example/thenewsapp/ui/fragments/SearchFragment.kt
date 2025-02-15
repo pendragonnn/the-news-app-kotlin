@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.thenewsapp.R
 import androidx.lifecycle.Observer
 import com.example.thenewsapp.adapters.NewsAdapter
-import com.example.thenewsapp.databinding.FragmentHeadlinesBinding
 import com.example.thenewsapp.databinding.FragmentSearchBinding
 import com.example.thenewsapp.ui.NewsActivity
 import com.example.thenewsapp.ui.NewsViewModel
@@ -48,8 +47,6 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        binding = FragmentSearchBinding.bind(view)
 
         itemSearchError = view.findViewById(R.id.itemSearchError)
 

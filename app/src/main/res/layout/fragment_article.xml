@@ -17,8 +17,9 @@
         android:layout_height="wrap_content"
         android:src="@drawable/baseline_favorite_24"
         app:fabSize="normal"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/red"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

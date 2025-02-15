@@ -7,15 +7,15 @@
     tools:context=".ui.fragments.SearchFragment">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search."
+        android:background="@color/red"
+        android:gravity="center"
+        android:text="Search"
         android:textSize="30sp"
         android:fontFamily="@font/poppins"
-        android:textColor="@color/purple"
+        android:textColor="@color/white"
         android:textStyle="bold"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -30,7 +30,7 @@
         android:padding="8dp"
         android:textSize="14sp"
         android:fontFamily="@font/poppins"
-        android:drawableTint="@color/purple"
+        android:drawableTint="@color/red"
         android:background="@drawable/search_border"
         android:drawableEnd="@drawable/baseline_search_24"
         app:layout_constraintEnd_toEndOf="parent"
