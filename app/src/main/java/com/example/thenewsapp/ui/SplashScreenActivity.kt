@@ -23,7 +23,6 @@ class SplashScreenActivity : AppCompatActivity() {
             insets
         }
 
-
         Handler(Looper.getMainLooper()).postDelayed({
             goToMainActivity()
         }, 3000L)
