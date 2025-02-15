@@ -59,8 +59,10 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
         articleDateTime = holder.itemView.findViewById(R.id.articleDateTime)
 
         holder.itemView.apply {
+            val imageUrl = article.urlToImage
+
             Glide.with(this)
-                .load(article.urlToImage)
+                .load(if (!imageUrl.isNullOrEmpty()) imageUrl else R.drawable.placeholder)
                 .into(articleImage)
             articleSource.text = article.source?.name
             articleTitle.text = article.title
